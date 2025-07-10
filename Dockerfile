@@ -37,7 +37,7 @@ gopher_port          = 0
 
 [database]
 type     = sqlite3
-filename = writefreely.db
+filename = /data/writefreely.db
 username =
 password =
 database =
@@ -152,6 +152,21 @@ WORKDIR /app
 # Create /start.sh with executable content
 RUN cat << 'EOF' > /start.sh
 #!/bin/bash
+echo "Init files..."
+DB_DIR="/data"
+DB_PATH="$DB_DIR/writefreely.db"
+
+if [ ! -d "$DB_DIR" ]; then
+  echo "ERROR: Database directory '$DB_DIR' does not exist. Is the PVC mounted?"
+  exit 1
+fi
+
+if [ ! -f "$DB_PATH" ]; then
+  echo "Creating empty SQLite DB file at $DB_PATH"
+  touch "$DB_PATH"
+  chmod 660 "$DB_PATH"  # Optional: set permissions
+fi
+
 echo "Starting WriteFreely..."
 cd /app
 ./writefreely db init

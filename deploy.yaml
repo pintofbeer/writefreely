@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: writefreely
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: writefreely
+  template:
+    metadata:
+      labels:
+        app: writefreely
+    spec:
+      containers:
+        - name: writefreely
+          image: ghcr.io/pintofbeer/writefreely:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+          env:
+            - name: WF_ADMIN_USER
+              value: "wfadmin"
+            - name: WF_ADMIN_PASS
+              value: "changeme"
+          volumeMounts:
+            - name: db-volume
+              mountPath: /data
+            - name: config-volume
+              mountPath: /app/config.ini
+              subPath: config.ini
+      volumes:
+        - name: db-volume
+          persistentVolumeClaim:
+            claimName: writefreely-db-pvc
+        - name: config-volume
+          secret:
+            secretName: writefreely-config
