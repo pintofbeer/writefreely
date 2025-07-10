@@ -22,9 +22,13 @@ Making it work in Kubernetes isn't too difficult I've included some yaml files t
 Here's a basic setup...
 
 kubectl create namespace writefree-blog
+
 kubectl create secret generic writefreely-config --from-file=config.ini=./config.ini -n writefree-blog
+
 kubectl apply -f ./pvc.yaml -n writefree-blog
+
 kubectl apply -f ./deploy.yaml -n writefree-blog
+
 kubectl apply -f ./svc.yaml -n writefree-blog
 
 Don't forget to edit the deploy.yaml to change your username and password.
