@@ -43,3 +43,7 @@ For more info see:
 https://writefreely.org/
 
 They have their own Docker setup which is probably better than mine.
+
+If your curious my public version lives here:
+
+https://dave.madel.in
