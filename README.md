@@ -19,25 +19,39 @@ Next time you run it your database will persist, so you can omit the -e WF_ADMIN
 
 Making it work in Kubernetes isn't too difficult I've included some yaml files to get you going.
 
-Here's a basic setup...
+Note this is a basic setup, I've only tested it with the sqlite backend, not MySQL - I may not have included relevant packages in the Dockerfile for that.
 
+First, give it a namespace, optional but tidier.
+
+```
 kubectl create namespace writefree-blog
+```
 
+Then copy the config file (edit it first) into a secret for the deployment to access as a file. Ideally, update your host name in config.ini to the hostname it will ultimately have. I think this is only relevant for federation to work, but worth doing.
+
+```
 kubectl create secret generic writefreely-config --from-file=config.ini=./config.ini -n writefree-blog
+```
 
+The provision some storage, this uses your default provider, for me that's longhorn.
+
+```
 kubectl apply -f ./pvc.yaml -n writefree-blog
+```
 
+Now do the deployment, update the username and password in this, as you can't change it later:
+
+```
 kubectl apply -f ./deploy.yaml -n writefree-blog
+```
 
+Finally, create a service. This sets up a ClusterIP, change it if you need LoadBalancer.
+
+```
 kubectl apply -f ./svc.yaml -n writefree-blog
+```
 
-Don't forget to edit the deploy.yaml to change your username and password.
-
-This will get it up and running on a ClusterIP from there you can create an ingress if you need to.
-
-Personally I run a Cloudflare tunnel into my cluster and hook it up that way.
-
-Be sure to change your host name in config.ini to match the external domain it lives on if you want federation to work.
+Now if you need it set up some ingress, personally I have a Cloudflare tunnel running inside my cluster so I can just point domains to the service label on that. Saves all the faff with SSL provisioning etc.
 
 # Why this exists
 
