@@ -51,7 +51,7 @@ Finally, create a service. This sets up a ClusterIP, change it if you need LoadB
 kubectl apply -f ./svc.yaml -n writefree-blog
 ```
 
-Now if you need it set up some ingress, personally I have a Cloudflare tunnel running inside my cluster so I can just point domains to the service label on that. Saves all the faff with SSL provisioning etc.
+Now if you need it set up some ingress, personally I have a Cloudflare tunnel running inside my cluster so I can just point domains to the service hostname on that (likely `writefreely.writefree-blog.svc.cluster.local` if following this guide). Saves all the faff with SSL provisioning etc.
 
 # Why this exists
 
