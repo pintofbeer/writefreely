@@ -33,7 +33,7 @@ Then copy the config file (edit it first) into a secret for the deployment to ac
 kubectl create secret generic writefreely-config --from-file=config.ini=./config.ini -n writefree-blog
 ```
 
-The provision some storage, this uses your default provider, for me that's longhorn.
+Then provision some storage, this uses your default provider, for me that's longhorn.
 
 ```
 kubectl apply -f ./pvc.yaml -n writefree-blog
